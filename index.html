@@ -1,6 +1,54 @@
 <!DOCTYPE html>
 <html>
 <body>
-henlo world!
+<script src="https://rawgit.com/nodeca/pako/master/dist/pako.min.js"></script>
+<script>
+ToBase64 = function (u8) {
+    return btoa(String.fromCharCode.apply(null, u8));
+}
+
+FromBase64 = function (str) {
+    return atob(str).split('').map(function (c) { return c.charCodeAt(0); });
+}
+
+window.addEventListener('load', (event) => {
+	if(window.location.hash.substr(1) == '') {
+		console.log("empty!")
+	} else {
+		var data = pako.inflate(new Uint8Array(FromBase64(window.location.hash.substr(1))))
+		if(data[0] == 95) {
+			document.querySelector("#twt").innerText=new TextDecoder().decode(data).replace("_","")
+		} else {
+			var blob = new Blob([data], {type: 'image'});
+			document.querySelector("#iwi").src=URL.createObjectURL(blob);	
+		}
+	}
+	document.querySelector("#owo").addEventListener("click", encode)
+	document.querySelector("form").addEventListener("submit", encode)
+	document.querySelector("#qwq").addEventListener("change", handleFiles, false);
+});
+
+	function encode(e) {
+		e.preventDefault();
+		var text = "_"+document.querySelector("#uwu").value;
+		window.location.hash='#'+ToBase64(pako.deflate(text));
+		window.location.reload()
+	}
+	function handleFiles() {
+		fileReader = new FileReader()
+		fileReader.readAsArrayBuffer(this.files[0])
+		fileReader.onloadend = function(e) {
+			window.location.hash='#'+ToBase64(pako.deflate(new Uint8Array(e.srcElement.result)))
+			window.location.reload();
+	}
+}
+
+</script>
+<form>
+<input type="text" id="uwu"><input type="button" id="owo" value="encode"><br>
+<input type="file" id="qwq">
+</form>
+<img id="iwi">
+<span id="twt"></span>
 </body>
 </html>
