@@ -1,5 +1,18 @@
 <!DOCTYPE html>
 <html>
+<head>
+<style>
+	body {
+		font-family: monospace;
+		color: #ccc;
+		background-color: #222;
+	}
+	textarea {
+		width: 625px;
+		height: 150px;
+	}
+</style>
+</head>
 <body>
 <script src="https://rawgit.com/nodeca/pako/master/dist/pako.min.js"></script>
 <script>
@@ -24,12 +37,9 @@ window.addEventListener('load', (event) => {
 		}
 	}
 	document.querySelector("#owo").addEventListener("click", encode)
-	document.querySelector("form").addEventListener("submit", encode)
 	document.querySelector("#qwq").addEventListener("change", handleFiles, false);
 });
-
-	function encode(e) {
-		e.preventDefault();
+	function encode() {
 		var text = "_"+document.querySelector("#uwu").value;
 		window.location.hash='#'+ToBase64(pako.deflate(text));
 		window.location.reload()
@@ -42,12 +52,9 @@ window.addEventListener('load', (event) => {
 			window.location.reload();
 	}
 }
-
 </script>
-<form>
-<input type="text" id="uwu"><input type="button" id="owo" value="encode"><br>
+<textarea id="uwu"></textarea><input type="button" id="owo" value="encode"><br>
 <input type="file" id="qwq">
-</form>
 <img id="iwi">
 <span id="twt"></span>
 </body>
